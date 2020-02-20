@@ -1,0 +1,214 @@
+[
+    {
+        "id": "abebb7d6.ddff8",
+        "type": "mqtt in",
+        "z": "94f41b55.01a36",
+        "name": "YOURCHOOSENNAME",
+        "topic": "APPLICATIONID/devices/DEVICEID/up",
+        "qos": "2",
+        "datatype": "json",
+        "broker": "8303d8e5.1bf908",
+        "x": 105,
+        "y": 100,
+        "wires": [
+            [
+                "5140ead3.da5a9c"
+            ]
+        ]
+    },
+    {
+        "id": "5140ead3.da5a9c",
+        "type": "function",
+        "z": "94f41b55.01a36",
+        "name": "LoRaCLOUD API V2 LoRaWiFi",
+        "func": "var loracloud_token = \"PLACEYOURTOKENHERE\"\nvar dev_url = \"https://gls.loracloud.com/api/v2/loraWifi\";\n\nvar data = {\n            \"lorawan\":[],\n            \"wifiAccessPoints\": []\n            };\n\nif (msg.payload.metadata.gateways[0]) {\n\tdata[\"lorawan\"][0] = {\n\t\t\t\t\"gatewayId\": msg.payload.metadata.gateways[0].gtw_id,\n\t\t\t\t\"antennaId\":msg.payload.metadata.gateways[0].rf_chain,\n\t\t\t\t\"rssi\":msg.payload.metadata.gateways[0].rssi,\n\t\t\t\t\"snr\":msg.payload.metadata.gateways[0].snr,\n\t\t\t\t\"toa\": msg.payload.metadata.gateways[0].timestamp,\n\t\t\t\t\"encryptedToa\": \"\",\n\t\t\t\t\"antennaLocation\":{\n\t\t\t\t\"latitude\": msg.payload.metadata.gateways[0].latitude,\n\t\t\t\t\"longitude\": msg.payload.metadata.gateways[0].longitude,\n\t\t\t\t\"altitude\": msg.payload.metadata.gateways[0].altitude,\n\t\t\t\t\n\t\t\t\t    \n\t\t\t\t}\n};\n}\n\nif (msg.payload.metadata.gateways[1]) {\n\tdata[\"lorawan\"][1] = {\n\t\t\t\t\"gatewayId\": msg.payload.metadata.gateways[1].gtw_id,\n\t\t\t\t\"antennaId\":msg.payload.metadata.gateways[1].rf_chain,\n\t\t\t\t\"rssi\":msg.payload.metadata.gateways[1].rssi,\n\t\t\t\t\"snr\":msg.payload.metadata.gateways[1].snr,\n\t\t\t\t\"toa\": msg.payload.metadata.gateways[1].timestamp,\n\t\t\t\t\"encryptedToa\": \"\",\n\t\t\t\t\"antennaLocation\":{\n\t\t\t\t\"latitude\": msg.payload.metadata.gateways[1].latitude,\n\t\t\t\t\"longitude\": msg.payload.metadata.gateways[1].longitude,\n\t\t\t\t\"altitude\": msg.payload.metadata.gateways[1].altitude,\n\t\t\t\t}\n\t\t\t\t    \n\t\t\t\t};\n}\nif (msg.payload.metadata.gateways[2]) {\n\tdata[\"lorawan\"][2] = {\n\t\t\t\t\"gatewayId\": msg.payload.metadata.gateways[2].gtw_id,\n\t\t\t\t\"antennaId\":msg.payload.metadata.gateways[2].rf_chain,\n\t\t\t\t\"rssi\":msg.payload.metadata.gateways[2].rssi,\n\t\t\t\t\"snr\":msg.payload.metadata.gateways[2].snr,\n\t\t\t\t\"toa\": msg.payload.metadata.gateways[2].timestamp,\n\t\t\t\t\"encryptedToa\": \"\",\n\t\t\t\t\"antennaLocation\":{\n\t\t\t\t\"latitude\": msg.payload.metadata.gateways[2].latitude,\n\t\t\t\t\"longitude\": msg.payload.metadata.gateways[2].longitude,\n\t\t\t\t\"altitude\": msg.payload.metadata.gateways[2].altitude,\n\t\t\t\t}\n\t\t\t\t    \n\t\t\t\t};\n}\nif (msg.payload.metadata.gateways[3]) {\n\tdata[\"lorawan\"][3] = {\n\t\t\t\t\"gatewayId\": msg.payload.metadata.gateways[3].gtw_id,\n\t\t\t\t\"antennaId\":msg.payload.metadata.gateways[3].rf_chain,\n\t\t\t\t\"rssi\":msg.payload.metadata.gateways[3].rssi,\n\t\t\t\t\"snr\":msg.payload.metadata.gateways[3].snr,\n\t\t\t\t\"toa\": msg.payload.metadata.gateways[3].timestamp,\n\t\t\t\t\"encryptedToa\": \"\",\n\t\t\t\t\"antennaLocation\":{\n\t\t\t\t\"latitude\": msg.payload.metadata.gateways[3].latitude,\n\t\t\t\t\"longitude\": msg.payload.metadata.gateways[3].longitude,\n\t\t\t\t\"altitude\": msg.payload.metadata.gateways[3].altitude,\n\t\t\t\t}\n\t\t\t\t    \n\t\t\t\t};\n}\n\n\n\n\n\n\nif (msg.payload.payload_fields.macaddress.mac_1) {\n\tdata[\"wifiAccessPoints\"][0] = {\n\t\t\t\t\"macAddress\": msg.payload.payload_fields.macaddress.mac_1,\n\t\t\t\t\"signalStrength\":msg.payload.payload_fields.macaddress.rssi_1,\n\t\t\t\t};\n}\n\nif (msg.payload.payload_fields.macaddress.mac_2) {\n\tdata[\"wifiAccessPoints\"][1] = {\n\t\t\t\t\"macAddress\": msg.payload.payload_fields.macaddress.mac_2,\n\t\t\t\t\"signalStrength\":msg.payload.payload_fields.macaddress.rssi_2,\n\n\t\t\t\t};\n}\n\n\nvar msg = {\n            \"method\" : \"POST\",\n            \"url\" : dev_url,\n            \"headers\" : {\n                \"Ocp-Apim-Subscription-Key\" : loracloud_token,\n                \"Content-Type\": \"application/json\",\n            },\n            \"payload\" : JSON.stringify(data)\n            };\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 343,
+        "y": 155,
+        "wires": [
+            [
+                "5185030a.5fed4c"
+            ]
+        ]
+    },
+    {
+        "id": "5185030a.5fed4c",
+        "type": "http request",
+        "z": "94f41b55.01a36",
+        "name": "",
+        "method": "use",
+        "ret": "txt",
+        "url": "",
+        "tls": "",
+        "x": 570,
+        "y": 155,
+        "wires": [
+            [
+                "b1f2b684.a354d"
+            ]
+        ]
+    },
+    {
+        "id": "88349afb.fb50a",
+        "type": "function",
+        "z": "94f41b55.01a36",
+        "name": "Convert to GPS-json",
+        "func": "var msg1 = {};\n\nif (msg.payload.result.locationEst) {\n\n    msg1.payload = msg.payload;\n    msg1.payload.date = Date().toString();\n    msg1.payload.lon = msg.payload.result.locationEst.longitude;\n    msg1.payload.lat = msg.payload.result.locationEst.latitude;\n\n    // processed with Google\n    if (msg.payload.result.locationEst) {\n        msg1.payload.radius = msg.payload.result.locationEst.toleranceHoriz;\n        delete msg1.payload.result.locationEst.toleranceHoriz;\n    }\n    \n    // processed with HERE\n    if (msg.payload.result.locationEst.toleranceHoriz) {\n        msg1.payload.radius = msg.payload.result.locationEst.toleranceHoriz;\n    }\n\n    delete msg1.payload.result.locationEst.toleranceHoriz;\n}\n\nreturn msg1;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 496,
+        "y": 237,
+        "wires": [
+            [
+                "9851f45e.76861"
+            ]
+        ]
+    },
+    {
+        "id": "cbf6fe29.e2862",
+        "type": "function",
+        "z": "94f41b55.01a36",
+        "name": "Convert to TrackLine",
+        "func": "var msg1 = {};\nif (msg.payload) {\n    msg1.payload = msg.payload;\n\n    msg1.payload.layer = \"Track\";\n    msg1.payload.name = \"Track line\";\n    \n    delete msg1.payload.radius;\n}\nreturn msg1;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 504,
+        "y": 362,
+        "wires": [
+            [
+                "c15c9419.9b7f18"
+            ]
+        ]
+    },
+    {
+        "id": "c21d841d.067678",
+        "type": "function",
+        "z": "94f41b55.01a36",
+        "name": "Convert to TrackPins",
+        "func": "var msg1 = {};\nif (msg.payload) {\n    msg1.payload=msg.payload;\n\n    msg1.payload.layer = \"Pins\";\n    msg1.payload.iconColor = \"red\";\n    msg1.payload.name=Date().toString();\n    msg1.payload.icon = \"signal-stream\";\n    \n    delete msg1.payload.radius;\n}\nreturn msg1;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 505,
+        "y": 322,
+        "wires": [
+            [
+                "55c6b345.a422dc"
+            ]
+        ]
+    },
+    {
+        "id": "11c9276c.e71569",
+        "type": "function",
+        "z": "94f41b55.01a36",
+        "name": "Convert to Worldmap",
+        "func": "var msg1 = {};\nif (msg.payload) {\n    msg1.payload=msg.payload;\n\n    msg1.payload.layer = \"Current Location\";\n    msg1.payload.name = \"Current Location\";\n    msg1.payload.iconColor = \"orange\";\n    msg1.payload.icon = \"wifi\";\n}\nreturn msg1;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 499,
+        "y": 281,
+        "wires": [
+            [
+                "55c6b345.a422dc"
+            ]
+        ]
+    },
+    {
+        "id": "9851f45e.76861",
+        "type": "switch",
+        "z": "94f41b55.01a36",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "nnull"
+            }
+        ],
+        "checkall": "true",
+        "outputs": 1,
+        "x": 265,
+        "y": 268,
+        "wires": [
+            [
+                "cbf6fe29.e2862",
+                "11c9276c.e71569",
+                "c21d841d.067678"
+            ]
+        ]
+    },
+    {
+        "id": "c15c9419.9b7f18",
+        "type": "worldmap-tracks",
+        "z": "94f41b55.01a36",
+        "name": "Map Track",
+        "depth": "200",
+        "x": 502.5,
+        "y": 416,
+        "wires": [
+            [
+                "55c6b345.a422dc"
+            ]
+        ]
+    },
+    {
+        "id": "b1f2b684.a354d",
+        "type": "json",
+        "z": "94f41b55.01a36",
+        "name": "Convert to JSON",
+        "pretty": false,
+        "x": 280,
+        "y": 212,
+        "wires": [
+            [
+                "88349afb.fb50a"
+            ]
+        ]
+    },
+    {
+        "id": "55c6b345.a422dc",
+        "type": "worldmap",
+        "z": "94f41b55.01a36",
+        "name": "LoRaWiFigeolocation",
+        "lat": "51.839617",
+        "lon": " 5.877225",
+        "zoom": "",
+        "layer": "Esri Satellite",
+        "cluster": "",
+        "maxage": "12000",
+        "usermenu": "show",
+        "layers": "show",
+        "panit": "false",
+        "hiderightclick": "false",
+        "coords": "none",
+        "path": "",
+        "x": 763,
+        "y": 282,
+        "wires": []
+    },
+    {
+        "id": "8303d8e5.1bf908",
+        "type": "mqtt-broker",
+        "z": "",
+        "name": "",
+        "broker": "mqtt://eu.thethings.network",
+        "port": "1990",
+        "clientid": "",
+        "usetls": false,
+        "compatmode": true,
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": ""
+    }
+]
