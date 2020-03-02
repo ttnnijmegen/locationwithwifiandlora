@@ -27,7 +27,8 @@
  *
  * TTN Nijmegen localisation workshop with different technologies (WiFi &LoRaWAN)
  * by Roger Meijs, Rob Jansen and Frank Beks
- * 
+ * This sketch is made by Frank Beks 
+ 
  * This sketch will check it's location by listening to surrounding WiFi networks.
  * It will run on Wemos ESP8266 / RFM95 Ch2i board
  * 
